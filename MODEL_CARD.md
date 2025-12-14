@@ -4,31 +4,95 @@
 - **Name:** Heart Disease Classifier
 - **Version:** v1
 - **Authors / Provider:** sentongo-web
-- **Model type:** scikit-learn classification pipeline
+- **Model type:** scikit-learn classification pipeline (preprocessing + LogisticRegression)
 - **File:** `models/model.joblib`
 
 ## Intended use
 - **Primary use case:** Assistive screening for heart disease risk from structured clinical attributes (tabular CSV). Intended for research, demonstration and educational purposes.
 - **Users:** Researchers, students, demonstrators.
-- **Out-of-scope:** Clinical diagnosis, treatment decisions. Not to be used as a sole basis for medical decisions.
+- **Out-of-scope:** Clinical diagnosis or treatment decisions. Not to be used as a sole basis for medical care.
 
-## Data
-- **Training data:** `Heart_Disease_Prediction.csv` included in repository root.
-- **Features:** clinical attributes included in the CSV (see `src/eda/eda.py` for preprocessing and feature engineering).
-- **Labels:** binary heart disease presence/absence (as prepared in training script).
+## Data and Features (exact column names)
+The model expects the following columns (exact names as headers in `Heart_Disease_Prediction.csv`):
+
+- Age (numeric)
+- Sex (numeric; 1 = male, 0 = female in this dataset)
+- Chest pain type (numeric code)
+- BP (blood pressure; numeric)
+- Cholesterol (numeric)
+- FBS over 120 (numeric; 1 = true, 0 = false)
+- EKG results (numeric code)
+- Max HR (numeric)
+- Exercise angina (numeric; 1 = yes, 0 = no)
+- ST depression (numeric)
+- Slope of ST (numeric code)
+- Number of vessels fluro (numeric)
+- Thallium (numeric code)
+
+The target column in the CSV is `Heart Disease` (values in the repository are `Presence` / `Absence` and are normalized to 1/0 during training).
+
+## Sample input (JSON) and types
+Example JSON payload representing a single patient (keys must match the column names exactly):
+
+```json
+{
+	"Age": 63,
+	"Sex": 1,
+	"Chest pain type": 4,
+	"BP": 150,
+	"Cholesterol": 407,
+	"FBS over 120": 0,
+	"EKG results": 2,
+	"Max HR": 154,
+	"Exercise angina": 0,
+	"ST depression": 4.0,
+	"Slope of ST": 2,
+	"Number of vessels fluro": 3,
+	"Thallium": 7
+}
+```
+
+## Quick example — load model and predict (Python)
+```python
+import pandas as pd
+import joblib
+
+# load trained pipeline
+model = joblib.load('models/model.joblib')
+
+# create a DataFrame with one row; column names must match exactly
+sample = {
+		'Age': 63,
+		'Sex': 1,
+		'Chest pain type': 4,
+		'BP': 150,
+		'Cholesterol': 407,
+		'FBS over 120': 0,
+		'EKG results': 2,
+		'Max HR': 154,
+		'Exercise angina': 0,
+		'ST depression': 4.0,
+		'Slope of ST': 2,
+		'Number of vessels fluro': 3,
+		'Thallium': 7
+}
+df = pd.DataFrame([sample])
+pred = model.predict(df)
+proba = model.predict_proba(df) if hasattr(model, 'predict_proba') else None
+print('prediction (0=Absence,1=Presence):', pred[0])
+if proba is not None:
+		print('probabilities:', proba[0].tolist())
+```
 
 ## Evaluation
-- **Evaluation script:** `src/models/train.py` produces metrics when run.
-- **Recommended metrics to report:** accuracy, precision, recall, F1, ROC AUC, confusion matrix.
+- Use `python src/models/train.py` to reproduce training and evaluation metrics. Save outputs under `results/<experiment-id>/`.
 
-## Ethical considerations & Limitations
-- The dataset may not represent global populations — performance can degrade on underrepresented groups.
-- Model may encode biases present in training data (e.g., age, sex, ethnicity distributions). Evaluate fairness before deployment.
-- No clinical validation performed; intended for research only.
+## Ethical considerations & limitations
+- Dataset coverage and demographic representation are limited; model performance can degrade on underrepresented subgroups.
+- No clinical validation — do not use for real patient decision-making.
 
-## Maintenance & reproducibility
-- Retrain using `python src/models/train.py` and record hyperparameters and random seeds in `results/`.
-- Save experiment outputs and evaluation artifacts under `results/` for reproducibility.
+## Reproducibility
+- Retrain with `python src/models/train.py` and store experimental metadata (seed, split, hyperparameters) in `results/`.
 
 ## Contact
-- For questions about the model and experiments contact repository owner: sentongo-web
+- Repository owner: sentongo-web
