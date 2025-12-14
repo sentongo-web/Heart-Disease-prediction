@@ -1,0 +1,57 @@
+Shape: (270, 14)
+
+Columns and dtypes:
+Age                          int64
+Sex                          int64
+Chest pain type              int64
+BP                           int64
+Cholesterol                  int64
+FBS over 120                 int64
+EKG results                  int64
+Max HR                       int64
+Exercise angina              int64
+ST depression              float64
+Slope of ST                  int64
+Number of vessels fluro      int64
+Thallium                     int64
+Heart Disease               object
+dtype: object
+
+Missing values:
+Age                        0
+Sex                        0
+Chest pain type            0
+BP                         0
+Cholesterol                0
+FBS over 120               0
+EKG results                0
+Max HR                     0
+Exercise angina            0
+ST depression              0
+Slope of ST                0
+Number of vessels fluro    0
+Thallium                   0
+Heart Disease              0
+dtype: int64
+
+Descriptive statistics:
+               Age         Sex  Chest pain type          BP  Cholesterol  ...  ST depression  Slope of ST  Number of vessels fluro    Thallium  Heart Disease
+count   270.000000  270.000000       270.000000  270.000000   270.000000  ...      270.00000   270.000000               270.000000  270.000000            270
+unique         NaN         NaN              NaN         NaN          NaN  ...            NaN          NaN                      NaN         NaN              2
+top            NaN         NaN              NaN         NaN          NaN  ...            NaN          NaN                      NaN         NaN        Absence
+freq           NaN         NaN              NaN         NaN          NaN  ...            NaN          NaN                      NaN         NaN            150
+mean     54.433333    0.677778         3.174074  131.344444   249.659259  ...        1.05000     1.585185                 0.670370    4.696296            NaN
+std       9.109067    0.468195         0.950090   17.861608    51.686237  ...        1.14521     0.614390                 0.943896    1.940659            NaN
+min      29.000000    0.000000         1.000000   94.000000   126.000000  ...        0.00000     1.000000                 0.000000    3.000000            NaN
+25%      48.000000    0.000000         3.000000  120.000000   213.000000  ...        0.00000     1.000000                 0.000000    3.000000            NaN
+50%      55.000000    1.000000         3.000000  130.000000   245.000000  ...        0.80000     2.000000                 0.000000    3.000000            NaN
+75%      61.000000    1.000000         4.000000  140.000000   280.000000  ...        1.60000     2.000000                 1.000000    7.000000            NaN
+max      77.000000    1.000000         4.000000  200.000000   564.000000  ...        6.20000     3.000000                 3.000000    7.000000            NaN
+
+[11 rows x 14 columns]
+
+Target distribution:
+Heart Disease
+Absence     150
+Presence    120
+Name: count, dtype: int64
